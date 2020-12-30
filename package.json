@@ -5,13 +5,13 @@
     "cdk-demo": "bin/cdk-demo.js"
   },
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
+    "clean": "rimraf cdk.out",
+    "lint": "eslint --ext .ts .",
+    "synth": "cdk synth --no-staging > template.yaml",
     "test": "jest",
-    "cdk": "cdk",
-    "diff": "cdk diff CdkDemoStack",
-    "deploy": "cdk deploy CdkDemoStack",
-    "destroy": "cdk destroy CdkDemoStack"
+    "watch": "tsc -w",
+    "build": "tsc",
+    "cdk": "cdk"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.80.0",
@@ -22,17 +22,18 @@
     "aws-cdk": "1.80.0",
     "esbuild": "^0.8.27",
     "jest": "^26.4.2",
+    "rimraf": "^3.0.2",
     "ts-jest": "^26.2.0",
     "ts-node": "^9.0.0",
     "typescript": "~3.9.7"
   },
   "dependencies": {
     "@aws-cdk/aws-apigatewayv2": "1.80.0",
-    "@aws-cdk/aws-apigatewayv2-integrations": "^1.80.0",
+    "@aws-cdk/aws-apigatewayv2-integrations": "1.80.0",
     "@aws-cdk/aws-dynamodb": "1.80.0",
     "@aws-cdk/aws-lambda": "1.80.0",
     "@aws-cdk/aws-lambda-nodejs": "1.80.0",
-    "@aws-cdk/aws-sns": "^1.80.0",
+    "@aws-cdk/aws-sns": "1.80.0",
     "@aws-cdk/core": "1.80.0",
     "aws-lambda": "^1.0.6",
     "aws-sdk": "^2.819.0",
