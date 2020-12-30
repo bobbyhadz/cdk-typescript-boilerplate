@@ -1,31 +1,44 @@
 {
-  "name": "cdk-demo",
-  "version": "0.1.0",
-  "bin": {
-    "cdk-demo": "bin/cdk-demo.js"
-  },
+  "name": "cdk-boilerplate",
+  "version": "1.0.0",
+  "description": "Boilerplate for using AWS CDK alongside typescript Lambdas",
+  "keywords": [
+    "aws",
+    "cdk",
+    "typescript",
+    "lambda"
+  ],
+  "tags": [
+    "aws",
+    "cdk",
+    "typescript",
+    "lambda"
+  ],
+  "author": "Borislav Hadzhiev",
+  "license": "MIT",
+  "private": true,
   "scripts": {
-    "clean": "rimraf cdk.out",
-    "lint": "eslint --ext .ts .",
+    "clean": "rm -rf -v cdk.out/",
     "synth": "cdk synth --no-staging > template.yaml",
     "test": "jest",
     "watch": "tsc -w",
     "build": "tsc",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "type-check": "tsc --project tsconfig.json --pretty --noEmit",
+    "lint": "eslint --ext js,jsx,ts,tsx --fix"
   },
-  "devDependencies": {
-    "@aws-cdk/assert": "1.80.0",
-    "@types/aws-lambda": "^8.10.68",
-    "@types/jest": "^26.0.10",
-    "@types/node": "10.17.27",
-    "@types/uuid": "^8.3.0",
-    "aws-cdk": "1.80.0",
-    "esbuild": "^0.8.27",
-    "jest": "^26.4.2",
-    "rimraf": "^3.0.2",
-    "ts-jest": "^26.2.0",
-    "ts-node": "^9.0.0",
-    "typescript": "~3.9.7"
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run type-check && lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run lint"
+    ],
+    "*.{html,js,json,md,yml,yaml,ts,tsx}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@aws-cdk/aws-apigatewayv2": "1.80.0",
@@ -33,11 +46,31 @@
     "@aws-cdk/aws-dynamodb": "1.80.0",
     "@aws-cdk/aws-lambda": "1.80.0",
     "@aws-cdk/aws-lambda-nodejs": "1.80.0",
-    "@aws-cdk/aws-sns": "1.80.0",
     "@aws-cdk/core": "1.80.0",
-    "aws-lambda": "^1.0.6",
-    "aws-sdk": "^2.819.0",
-    "source-map-support": "^0.5.19",
-    "uuid": "^8.3.2"
+    "source-map-support": "^0.5.19"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.80.0",
+    "@types/aws-lambda": "^8.10.68",
+    "@types/jest": "^26.0.10",
+    "@types/node": "^14.14.17",
+    "@typescript-eslint/eslint-plugin": "^4.11.1",
+    "@typescript-eslint/parser": "^4.11.1",
+    "aws-cdk": "1.80.0",
+    "esbuild": "^0.8.27",
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-import-resolver-typescript": "^2.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.3",
+    "eslint-plugin-prettier": "^3.3.0",
+    "husky": "^4.3.6",
+    "jest": "^26.4.2",
+    "lint-staged": "^10.5.3",
+    "prettier": "^2.2.1",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.3"
   }
 }

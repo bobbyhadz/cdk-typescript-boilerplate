@@ -1,6 +1,5 @@
 import {APIGatewayProxyEventV2, APIGatewayProxyResultV2} from 'aws-lambda';
 import {DynamoDB} from 'aws-sdk';
-import {env} from 'process';
 import {v4} from 'uuid';
 
 const dynamoClient = new DynamoDB.DocumentClient();
@@ -28,7 +27,7 @@ export async function post(
   // define a new task entry and await its creation
   const put = await dynamoClient
     .put({
-      TableName: env.TABLE_NAME!,
+      TableName: process.env.TABLE_NAME!,
       Item: {
         // Hash key is set to the new UUID
         PK: id,
@@ -38,6 +37,8 @@ export async function post(
       },
     })
     .promise();
+
+  console.log('put is', JSON.stringify(put, null, 2));
 
   // Tell the caller that everything went great
   return {

@@ -1,6 +1,5 @@
 import {APIGatewayProxyEventV2, APIGatewayProxyResultV2} from 'aws-lambda';
 import {DynamoDB} from 'aws-sdk';
-import {env} from 'process';
 
 const dynamoClient = new DynamoDB.DocumentClient();
 
@@ -42,7 +41,7 @@ async function getTasksFromDatabase(): Promise<DynamoDB.DocumentClient.ItemList>
     // Scan the table for all tasks
     const res: DynamoDB.DocumentClient.ScanOutput = await dynamoClient
       .scan({
-        TableName: env.TABLE_NAME!,
+        TableName: process.env.TABLE_NAME!,
         // Start with the given paging key
         ExclusiveStartKey: startKey,
       })
