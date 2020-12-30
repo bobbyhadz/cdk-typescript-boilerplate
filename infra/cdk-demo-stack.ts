@@ -23,9 +23,15 @@ export class CdkDemoStack extends cdk.Stack {
     const postFunction = new NodejsFunction(this, 'PostFunction', {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'post', // name of the exported function
-      entry: path.join(__dirname, '/../lambda/lib/tasks.ts'), // file to use as entry point for our Lambda function
+      entry: path.join(__dirname, '/../src/create-task/index.ts'), // file to use as entry point for our Lambda function
       environment: {
         TABLE_NAME: table.tableName,
+      },
+      bundling: {
+        // FIXME: if function uses layers, layers are already available so put them in externalModules
+        externalModules: ['aws-sdk'], // use the 'aws-sdk' available in the Lambda runtime
+        // minify: true,
+        // sourceMap: true,
       },
     });
 
@@ -35,7 +41,7 @@ export class CdkDemoStack extends cdk.Stack {
     const getFunction = new NodejsFunction(this, 'GetFunction', {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'get',
-      entry: path.join(__dirname, '/../lambda/lib/tasks.ts'),
+      entry: path.join(__dirname, '/../src/list-tasks/index.ts'),
       environment: {
         TABLE_NAME: table.tableName,
       },
