@@ -20,20 +20,20 @@ export async function post(
   }
 
   // As we made sure we have a body, let's parse it
-  const task = JSON.parse(event.body);
+  const task = JSON.parse(event.body) as {name: string; state: string};
   // Let's create a new UUID for the task
   const id = v4();
 
   // define a new task entry and await its creation
   const put = await dynamoClient
     .put({
-      TableName: process.env.TABLE_NAME!,
+      TableName: process.env.TABLE_NAME,
       Item: {
         // Hash key is set to the new UUID
         PK: id,
         // we just use the fields from the body
-        Name: task.name,
-        State: task.state,
+        name: task.name,
+        state: task.state,
       },
     })
     .promise();

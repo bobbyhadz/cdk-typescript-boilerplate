@@ -77,6 +77,7 @@ typings/
 
 infra/*.js
 *.d.ts
+!environment.d.ts
 
 # CDK asset staging directory
 .cdk.staging

@@ -1,6 +1,11 @@
 module.exports = {
   root: true,
-  ignorePatterns: ['node_modules', 'cdk.out', '!.prettierrc.js'],
+  ignorePatterns: [
+    'node_modules',
+    'cdk.out',
+    '!.prettierrc.js',
+    '.eslintrc.js',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.eslint.json',

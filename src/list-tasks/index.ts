@@ -14,8 +14,8 @@ export async function get(
   const tasks = (await getTasksFromDatabase()).map(task => ({
     // let's reformat the data to our API model
     id: task.PK,
-    name: task.Name,
-    state: task.State,
+    name: task.name,
+    state: task.state,
   }));
 
   // Return the list as JSON objects
@@ -29,30 +29,34 @@ export async function get(
   };
 }
 
+type Task = {
+  PK: string;
+  name: string;
+  state: string;
+};
+
 // Helper method to fetch all tasks
-async function getTasksFromDatabase(): Promise<DynamoDB.DocumentClient.ItemList> {
+async function getTasksFromDatabase(): Promise<Task[]> {
   // This variable will hold our paging key
   let startKey;
   // start with an empty list of tasks
   const result: DynamoDB.DocumentClient.ItemList = [];
 
   // start a fetch loop
-  do {
-    // Scan the table for all tasks
-    const res: DynamoDB.DocumentClient.ScanOutput = await dynamoClient
-      .scan({
-        TableName: process.env.TABLE_NAME!,
-        // Start with the given paging key
-        ExclusiveStartKey: startKey,
-      })
-      .promise();
-    // If we got tasks, store them into our list
-    if (res.Items) {
-      result.push(...res.Items);
-    }
-    // Keep the new paging token if there is one and repeat when necessary
-    startKey = res.LastEvaluatedKey;
-  } while (startKey);
+  // Scan the table for all tasks
+  const res: DynamoDB.DocumentClient.ScanOutput = await dynamoClient
+    .scan({
+      TableName: process.env.TABLE_NAME,
+      // Start with the given paging key
+      ExclusiveStartKey: startKey,
+    })
+    .promise();
+  // If we got tasks, store them into our list
+  if (res.Items) {
+    result.push(...res.Items);
+  }
+  // Keep the new paging token if there is one and repeat when necessary
+  startKey = res.LastEvaluatedKey;
   // return the accumulated list of tasks
-  return result;
+  return result as Task[];
 }

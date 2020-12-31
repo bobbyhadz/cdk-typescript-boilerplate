@@ -25,8 +25,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
-    "typeRoots": ["./node_modules/@types"],
+    "typeRoots": ["./node_modules/@types", "src/types"],
     "isolatedModules": true
   },
-  "exclude": ["cdk.out"]
+  "include": ["src/**/*.ts", "src/**/*.js", "types/**/*", "infra/**/*"],
+  "exclude": ["cdk.out", "node_modules"]
 }
