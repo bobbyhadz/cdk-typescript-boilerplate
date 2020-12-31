@@ -20,9 +20,9 @@ export class CdkDemoStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'TableName', {value: table.tableName});
 
-    const postFunction = new NodejsFunction(this, 'PostFunction', {
+    const createTaskFunction = new NodejsFunction(this, 'create-task', {
       runtime: lambda.Runtime.NODEJS_12_X,
-      handler: 'post', // name of the exported function
+      handler: 'main', // name of the exported function
       entry: path.join(__dirname, '/../src/create-task/index.ts'), // file to use as entry point for our Lambda function
       environment: {
         TABLE_NAME: table.tableName,
@@ -36,11 +36,11 @@ export class CdkDemoStack extends cdk.Stack {
     });
 
     // Grant full access to the data
-    table.grantReadWriteData(postFunction);
+    table.grantReadWriteData(createTaskFunction);
 
-    const getFunction = new NodejsFunction(this, 'GetFunction', {
+    const listTaskFunction = new NodejsFunction(this, 'get-task', {
       runtime: lambda.Runtime.NODEJS_12_X,
-      handler: 'get',
+      handler: 'main',
       entry: path.join(__dirname, '/../src/list-tasks/index.ts'),
       environment: {
         TABLE_NAME: table.tableName,
@@ -48,16 +48,16 @@ export class CdkDemoStack extends cdk.Stack {
     });
 
     // Grant only read access for this function
-    table.grantReadData(getFunction);
+    table.grantReadData(listTaskFunction);
 
-    const api = new apiGW.HttpApi(this, 'Api');
+    const api = new apiGW.HttpApi(this, 'tasks-api');
     new cdk.CfnOutput(this, 'ApiUrl', {value: api.url!});
 
     api.addRoutes({
       path: '/tasks',
       methods: [apiGW.HttpMethod.POST],
       integration: new apiGWIntegrations.LambdaProxyIntegration({
-        handler: postFunction,
+        handler: createTaskFunction,
       }),
     });
 
@@ -65,7 +65,7 @@ export class CdkDemoStack extends cdk.Stack {
       path: '/tasks',
       methods: [apiGW.HttpMethod.GET],
       integration: new apiGWIntegrations.LambdaProxyIntegration({
-        handler: getFunction,
+        handler: listTaskFunction,
       }),
     });
   }

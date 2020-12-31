@@ -36,6 +36,7 @@ module.exports = {
     ],
     'import/no-unresolved': 'warn',
     'import/prefer-default-export': 'off',
+    'no-new': 'off',
     'no-console': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
