@@ -7,7 +7,7 @@
       "name": "CDK Debugger",
       "skipFiles": ["<node_internals>/**"],
       "runtimeArgs": ["-r", "./node_modules/ts-node/register/transpile-only"],
-      // Entry point of your stack - replace /bin/cdk-demo.ts with the entry of your CDK app
+      // Entry point of your stack - replace /infra/app.ts with the entry of your CDK app
       "args": ["${workspaceFolder}/infra/app.ts"]
     }
   ]

@@ -4,6 +4,8 @@ import 'source-map-support/register';
 import {CdkDemoStack} from './cdk-demo-stack';
 
 const app = new cdk.App();
+
+// DEV Stack
 new CdkDemoStack(app, 'tasks-dev', {
   stackName: 'tasks-dev',
   env: {
@@ -14,14 +16,14 @@ new CdkDemoStack(app, 'tasks-dev', {
   },
 });
 
-// FIXME: Uncomment if you want a prod stack as well
+// PROD Stack
 
-// new CdkDemoStack(app, 'tasks-prod', {
-//   stackName: 'tasks-prod',
-//   env: {
-//     region: 'eu-central-1',
-//   },
-//   tags: {
-//     env: 'prod',
-//   },
-// });
+new CdkDemoStack(app, 'tasks-prod', {
+  stackName: 'tasks-prod',
+  env: {
+    region: 'eu-central-1',
+  },
+  tags: {
+    env: 'prod',
+  },
+});
