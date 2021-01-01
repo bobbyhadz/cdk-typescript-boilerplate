@@ -2,17 +2,6 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       TABLE_NAME: string;
-      appRegion: string;
-      userPoolId: string;
-      accountId: string;
-      identityPoolId: string;
-      databaseHost: string;
-      databasePort: number;
-      databaseUser: string;
-      databasePassword: string;
-      databaseName: string;
-      bucketName: string;
-      domainName: string;
     }
   }
 }

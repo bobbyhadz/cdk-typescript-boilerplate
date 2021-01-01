@@ -18,8 +18,12 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "setup": "npm install && npm install --prefix src/",
     "clean": "rm -rf -v cdk.out/",
-    "synth": "cdk synth --no-staging > template.yaml",
+    "synth-dev": "cdk synth tasks-dev --no-staging > template.yaml",
+    "synth-prod": "cdk synth tasks-prod --no-staging > template.yaml",
+    "deploy-dev": "DEPLOY_ENV=dev cdk deploy tasks-dev --outputs-file cdk-exports-dev.json",
+    "deploy-prod": "DEPLOY_ENV=prod cdk deploy tasks-prod --outputs-file cdk-exports-prod.json",
     "test": "jest",
     "watch": "tsc -w",
     "build": "tsc",

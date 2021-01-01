@@ -1,27 +1,9 @@
 import {APIGatewayProxyEventV2, APIGatewayProxyResultV2} from 'aws-lambda';
 import {DynamoDB} from 'aws-sdk';
+import {generateResponse} from '../utils/generate-response';
+import {returnError} from '../utils/returnError';
 
 const dynamoClient = new DynamoDB.DocumentClient();
-
-export async function main(
-  event: APIGatewayProxyEventV2,
-): Promise<APIGatewayProxyResultV2> {
-  console.log('Event', JSON.stringify(event, null, 2));
-
-  const tasks = (await getTasksFromDatabase()).map(task => ({
-    id: task.PK,
-    name: task.name,
-    state: task.state,
-  }));
-
-  return {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(tasks),
-  };
-}
 
 type Task = {
   PK: string;
@@ -29,18 +11,34 @@ type Task = {
   state: string;
 };
 
-async function getTasksFromDatabase(): Promise<Task[]> {
-  const result: DynamoDB.DocumentClient.ItemList = [];
+export async function main(
+  event: APIGatewayProxyEventV2,
+): Promise<APIGatewayProxyResultV2> {
+  console.log('Event', JSON.stringify(event, null, 2));
 
-  const res: DynamoDB.DocumentClient.ScanOutput = await dynamoClient
-    .scan({
-      TableName: process.env.TABLE_NAME,
-    })
-    .promise();
+  try {
+    const response = await dynamoClient
+      .scan({
+        TableName: process.env.TABLE_NAME,
+      })
+      .promise();
 
-  if (res.Items) {
-    result.push(...res.Items);
+    if (response.Items) {
+      return generateResponse({
+        statusCode: 200,
+        body: (response.Items as Task[]).map(task => ({
+          id: task.PK,
+          name: task.name,
+          state: task.state,
+        })),
+      });
+    }
+
+    throw new Error('Unable to fetch tasks');
+  } catch (error) {
+    return returnError({
+      statusCode: 500,
+      err: error as string,
+    });
   }
-
-  return result as Task[];
 }
