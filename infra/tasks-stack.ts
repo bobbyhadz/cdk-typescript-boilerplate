@@ -32,7 +32,7 @@ export class TasksStack extends cdk.Stack {
       },
     });
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    new cdk.CfnOutput(this, 'ApiUrl', {value: api.url!});
+    new cdk.CfnOutput(this, 'apiUrl', {value: api.url!});
 
     const table = new dynamodb.Table(this, 'Table', {
       partitionKey: {
@@ -41,7 +41,7 @@ export class TasksStack extends cdk.Stack {
       },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     });
-    new cdk.CfnOutput(this, 'TableName', {value: table.tableName});
+    new cdk.CfnOutput(this, 'tableName', {value: table.tableName});
 
     const createTaskFunction = new NodejsFunction(this, 'create-task', {
       runtime: lambda.Runtime.NODEJS_12_X,
