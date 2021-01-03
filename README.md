@@ -1,4 +1,4 @@
-# Welcome to your CDK TypeScript project!
+# Boilerplate for CDK for using Lambdas written in Typescript
 
 This is an example project for CDK, where the `infrastructure` and the
 `lambda code` are written in `typescript`.
@@ -96,3 +96,17 @@ Delete the prod-stack
 ```
 cdk destroy tasks-prod
 ```
+
+## Useful commands
+
+- `npm run setup` - installs the dependencies in both the `root` and the `src`
+  directories
+- `npm run synth-dev` - synths the `tasks-dev` stack and spit out a
+  `template.yaml` file in the root directory, which is the cloudformation
+  representation of the CDK code
+- `npm run deploy-dev` - deploys the `tasks-dev` stack to cloudformation and
+  outputs the `cdk-exports-dev.json` file, which contains the outputs specified
+  in your CDK code, and is a file you will most likely have to use in your
+  `frontend` - i.e. the `API URL from API Gateway`.
+- `npm run synth-prod` and `npm run deploy-prod` - same as above but for the
+  `tasks-prod` stack.
